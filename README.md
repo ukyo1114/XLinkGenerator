@@ -34,3 +34,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+### 環境変数の一覧
+
+| 変数名       | 役割             | デフォルト値 | DEV 環境での値 |
+| ------------ | ---------------- | ------------ | -------------- |
+| DATABASE_URL | PostgreSQL のURL | root         |                |
+
+url設定後npx prisma migrate dev --name initでマイグレーションを実行してスキーマを適用
