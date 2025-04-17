@@ -44,5 +44,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 | AWS_ACCESS_KEY_ID     | AWS のアクセスキーID             |              |                |
 | AWS_SECRET_ACCESS_KEY | AWS のシークレットアクセスキーID |              |                |
 | S3_BUCKET_NAME        | S3 のバケット名                  |              |                |
+| NEXT_PUBLIC_BASE_URL  | アプリのURL                      |              |                |
 
 url設定後npx prisma migrate dev --name initでマイグレーションを実行してスキーマを適用

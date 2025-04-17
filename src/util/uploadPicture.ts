@@ -1,6 +1,6 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 interface IUploadPicture {
-  userId: string;
+  xAccount: string;
   pic: string;
 }
 import { errors } from "@/config/errorMessages";
@@ -16,11 +16,11 @@ const s3 = new S3Client({
   credentials: { accessKeyId, secretAccessKey },
 });
 
-const uploadPicture = async ({
-  userId,
+export const uploadPicture = async ({
+  xAccount,
   pic,
 }: IUploadPicture): Promise<string> => {
-  const filePath = `user-icons/${userId}_profile.jpeg`;
+  const filePath = `user-icons/${xAccount}_profile.jpeg`;
   const base64Data = pic.replace(/^data:image\/\w+;base64,/, "");
   const buffer = Buffer.from(base64Data, "base64");
 
@@ -41,5 +41,3 @@ const uploadPicture = async ({
     throw new Error();
   }
 };
-
-export default uploadPicture;
