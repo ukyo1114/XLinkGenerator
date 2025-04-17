@@ -37,8 +37,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ### 環境変数の一覧
 
-| 変数名       | 役割             | デフォルト値 | DEV 環境での値 |
-| ------------ | ---------------- | ------------ | -------------- |
-| DATABASE_URL | PostgreSQL のURL | root         |                |
+| 変数名                | 役割                             | デフォルト値 | DEV 環境での値 |
+| --------------------- | -------------------------------- | ------------ | -------------- |
+| DATABASE_URL          | PostgreSQL のURL                 | root         |                |
+| AWS_REGION            | AWS のリージョン                 |              |                |
+| AWS_ACCESS_KEY_ID     | AWS のアクセスキーID             |              |                |
+| AWS_SECRET_ACCESS_KEY | AWS のシークレットアクセスキーID |              |                |
+| S3_BUCKET_NAME        | S3 のバケット名                  |              |                |
 
 url設定後npx prisma migrate dev --name initでマイグレーションを実行してスキーマを適用
