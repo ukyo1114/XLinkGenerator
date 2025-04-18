@@ -1,8 +1,5 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-interface IUploadPicture {
-  xAccount: string;
-  pic: string;
-}
+import { fileTypeFromBuffer } from "file-type";
 import { errors } from "@/config/errorMessages";
 
 const region = process.env.AWS_REGION;
@@ -16,19 +13,22 @@ const s3 = new S3Client({
   credentials: { accessKeyId, secretAccessKey },
 });
 
-export const uploadPicture = async ({
-  xAccount,
-  pic,
-}: IUploadPicture): Promise<string> => {
-  const filePath = `user-icons/${xAccount}_profile.jpeg`;
-  const base64Data = pic.replace(/^data:image\/\w+;base64,/, "");
-  const buffer = Buffer.from(base64Data, "base64");
+export const uploadPicture = async (
+  xAccount: string,
+  pic: Buffer
+): Promise<string> => {
+  const fileType = await fileTypeFromBuffer(pic);
+  if (!fileType || !["image/jpeg", "image/png"].includes(fileType.mime)) {
+    throw new Error();
+  }
+
+  const filePath = `images/${xAccount}_profile.${fileType.ext}`;
 
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Key: filePath,
-    Body: buffer,
-    ContentType: "image/jpeg",
+    Body: pic,
+    ContentType: fileType.mime,
     CacheControl: "no-cache",
   };
 
