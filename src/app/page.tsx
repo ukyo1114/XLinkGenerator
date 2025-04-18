@@ -1,10 +1,12 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import { Input } from "@/components/xAccountForm";
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
+        <Input />
         <Image
           className={styles.logo}
           src="/next.svg"
