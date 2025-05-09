@@ -1,41 +1,35 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { generateUrl } from "@/util/generateUrl";
-import formidable from "formidable";
 import { validateForm } from "@/util/validation";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
+    const xAccount = formData.get("xAccount");
+    const image = formData.get("image") as File;
 
-export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
-  const form = formidable({ keepExtensions: true, multiples: true });
-
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      console.error("フォームの解析中にエラーが発生しました:", err);
-      res.status(500).json({ error: "フォームの解析に失敗しました" });
-      return;
-    }
-
-    const xAccountField = fields.xAccount;
-    const imageFiles = files.image;
-
-    try {
-      const { xAccount, buffer } = await validateForm(
-        xAccountField,
-        imageFiles
+    if (!xAccount || !image) {
+      return NextResponse.json(
+        { error: "xAccount and image are required" },
+        { status: 400 }
       );
-
-      const url = generateUrl(xAccount, buffer);
-      res.status(200).json({ url });
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(400).json({ error: error.message });
-      } else {
-        res.status(400).json({ error: String(error) });
-      }
     }
-  });
-};
+
+    const { xAccount: validatedXAccount, buffer } = await validateForm(
+      xAccount.toString(),
+      image
+    );
+
+    const url = await generateUrl(validatedXAccount, buffer);
+    return NextResponse.json({ url });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    return NextResponse.json(
+      { error: "An unexpected error occurred" },
+      { status: 500 }
+    );
+  }
+}

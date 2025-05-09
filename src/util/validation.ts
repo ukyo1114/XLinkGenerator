@@ -1,6 +1,4 @@
 import * as FileType from "file-type";
-import formidable from "formidable";
-import fs from "fs";
 
 export const validateXAccount = (xAccount: string): void => {
   const isXAccountValid = xAccount.length >= 5 && xAccount.length <= 15;
@@ -19,23 +17,21 @@ export const validatePicture = async (pic: Buffer): Promise<void> => {
 };
 
 export const validateForm = async (
-  field: string[] | undefined,
-  files: formidable.File[] | undefined
+  xAccount: string,
+  file: File
 ): Promise<{ xAccount: string; buffer: Buffer }> => {
-  if (!field || field.length === 0) {
+  if (!xAccount) {
     throw new Error("xAccountが提供されていません");
   }
 
-  if (!files || files.length === 0) {
+  if (!file) {
     throw new Error("画像ファイルが提供されていません");
   }
 
-  const xAccount = field[0];
   validateXAccount(xAccount);
 
-  const pic = files[0];
-  const picPath = pic.filepath;
-  const buffer = fs.readFileSync(picPath);
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
   await validatePicture(buffer);
 
   return { xAccount, buffer };
