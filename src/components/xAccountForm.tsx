@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 import styles from "./xAccountForm.module.css";
 
 export const Input = () => {
@@ -89,7 +90,14 @@ export const Input = () => {
         />
         {previewUrl && (
           <div className={styles.previewContainer}>
-            <img src={previewUrl} alt="プレビュー" className={styles.preview} />
+            <Image
+              src={previewUrl}
+              alt="プレビュー"
+              className={styles.preview}
+              width={300}
+              height={300}
+              style={{ objectFit: "contain" }}
+            />
           </div>
         )}
       </div>
