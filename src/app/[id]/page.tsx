@@ -2,8 +2,13 @@ import { fetchItem } from "@/util/fetchItem";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const data = await fetchItem(params.id);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const resolvedParams = await params;
+  const data = await fetchItem(resolvedParams.id);
   if (!data) redirect("/not-found");
 
   redirect(`https://x.com/${data.xAccount}`);
@@ -12,9 +17,10 @@ export default async function Page({ params }: { params: { id: string } }) {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const data = await fetchItem(params.id);
+  const resolvedParams = await params;
+  const data = await fetchItem(resolvedParams.id);
   if (!data) return {};
 
   return {
