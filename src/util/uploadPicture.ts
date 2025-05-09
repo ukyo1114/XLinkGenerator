@@ -1,23 +1,23 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { fileTypeFromBuffer } from "file-type";
+import * as FileType from "file-type";
 import { errors } from "@/config/errorMessages";
-
-const region = process.env.AWS_REGION;
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const isEnvVarsDevined = region && accessKeyId && secretAccessKey;
-if (!isEnvVarsDevined) throw new Error(errors.ENV_VARS_NOT_DEFINED);
-
-const s3 = new S3Client({
-  region,
-  credentials: { accessKeyId, secretAccessKey },
-});
 
 export const uploadPicture = async (
   xAccount: string,
   pic: Buffer
 ): Promise<string> => {
-  const fileType = await fileTypeFromBuffer(pic);
+  const region = process.env.AWS_REGION;
+  const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+  const isEnvVarsDevined = region && accessKeyId && secretAccessKey;
+  if (!isEnvVarsDevined) throw new Error(errors.ENV_VARS_NOT_DEFINED);
+
+  const s3 = new S3Client({
+    region,
+    credentials: { accessKeyId, secretAccessKey },
+  });
+
+  const fileType = await FileType.fromBuffer(pic);
   if (!fileType || !["image/jpeg", "image/png"].includes(fileType.mime)) {
     throw new Error();
   }

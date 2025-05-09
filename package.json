@@ -7,14 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest --config jest.config.cjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.787.0",
     "@prisma/client": "^6.6.0",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.8.4",
-    "file-type": "^20.4.1",
+    "file-type": "^14.7.1",
     "formidable": "^3.5.2",
     "next": "15.3.0",
     "react": "^19.0.0",
@@ -33,6 +33,7 @@
     "eslint-config-next": "15.3.0",
     "jest": "^29.7.0",
     "prisma": "^6.6.0",
+    "ts-jest": "^29.1.2",
     "typescript": "^5"
   }
 }

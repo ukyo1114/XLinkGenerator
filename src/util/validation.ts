@@ -1,16 +1,16 @@
-import { fileTypeFromBuffer } from "file-type";
+import * as FileType from "file-type";
 import formidable from "formidable";
 import fs from "fs";
 
-const validateXAccount = (xAccount: string): void => {
+export const validateXAccount = (xAccount: string): void => {
   const isXAccountValid = xAccount.length >= 5 && xAccount.length <= 15;
   if (!isXAccountValid) throw new Error("Xアカウントの形式が無効です");
 };
 
-const validatePicture = async (pic: Buffer): Promise<void> => {
+export const validatePicture = async (pic: Buffer): Promise<void> => {
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-  const fileType = await fileTypeFromBuffer(pic);
+  const fileType = await FileType.fromBuffer(pic);
   const isImageValid =
     fileType &&
     ["image/jpeg", "image/png"].includes(fileType.mime) &&
