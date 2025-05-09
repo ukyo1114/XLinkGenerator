@@ -97,6 +97,7 @@ export const Input = () => {
               width={300}
               height={300}
               style={{ objectFit: "contain" }}
+              unoptimized={true}
             />
           </div>
         )}
