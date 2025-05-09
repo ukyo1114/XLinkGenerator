@@ -7,7 +7,8 @@ export default async function RedirectPage({
 }: {
   params: { id: string };
 }) {
-  const data = await fetchItem(params.id);
+  const { id } = await params;
+  const data = await fetchItem(id);
   if (!data) redirect("/not-found");
 
   redirect(`https://x.com/${data.xAccount}`);
@@ -18,7 +19,8 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const data = await fetchItem(params.id);
+  const { id } = await params;
+  const data = await fetchItem(id);
   if (!data) return {};
 
   return {
