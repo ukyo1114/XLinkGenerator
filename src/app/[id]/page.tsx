@@ -4,11 +4,14 @@ import type { Metadata } from "next";
 
 type PageProps = {
   params: Promise<{ id: string }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export default async function Page({ params }: PageProps) {
-  const resolvedParams = await params;
+export default async function Page({ params, searchParams }: PageProps) {
+  const [resolvedParams, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams,
+  ]);
   const data = await fetchItem(resolvedParams.id);
   if (!data) redirect("/not-found");
 
@@ -17,8 +20,12 @@ export default async function Page({ params }: PageProps) {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: PageProps): Promise<Metadata> {
-  const resolvedParams = await params;
+  const [resolvedParams, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams,
+  ]);
   const data = await fetchItem(resolvedParams.id);
   if (!data) return {};
 
