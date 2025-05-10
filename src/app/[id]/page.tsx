@@ -1,6 +1,7 @@
 import { fetchItem } from "@/util/fetchItem";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -11,15 +12,26 @@ export default async function Page({ params }: Props) {
   const data = await fetchItem(resolvedParams.id);
   if (!data) redirect("/not-found");
 
-  // リダイレクトを一時的に無効化
-  return (
-    <div>
-      <h1>Preview Page</h1>
-      <p>X Account: {data.xAccount}</p>
-      <p>Image URL: {data.imageUrl}</p>
-      <a href={`https://x.com/${data.xAccount}`}>Go to X Profile</a>
-    </div>
-  );
+  // Xのクロラーかどうかを判定（User-Agentをチェック）
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+  const isCrawler =
+    userAgent.toLowerCase().includes("twitterbot") ||
+    userAgent.toLowerCase().includes("x.com") ||
+    userAgent.toLowerCase().includes("facebookexternalhit");
+
+  // クロラーの場合はメタデータを表示、それ以外はリダイレクト
+  if (isCrawler) {
+    return (
+      <div>
+        <h1>Preview Page</h1>
+        <p>X Account: {data.xAccount}</p>
+        <p>Image URL: {data.imageUrl}</p>
+      </div>
+    );
+  }
+
+  redirect(`https://x.com/${data.xAccount}`);
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
