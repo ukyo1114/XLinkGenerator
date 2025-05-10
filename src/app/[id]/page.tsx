@@ -26,26 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      images: [
-        {
-          url: imageUrl,
-          alt: `${data.xAccount}'s profile image`,
-        },
-      ],
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [imageUrl],
-      creator: data.xAccount,
-    },
     other: {
-      "twitter:image:alt": `${data.xAccount}'s profile image`,
+      "twitter:card": "summary",
+      "twitter:image": imageUrl,
+      "twitter:title": title,
+      "twitter:description": description,
+      "twitter:creator": data.xAccount,
     },
   };
 }
