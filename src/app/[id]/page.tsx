@@ -11,7 +11,15 @@ export default async function Page({ params }: Props) {
   const data = await fetchItem(resolvedParams.id);
   if (!data) redirect("/not-found");
 
-  redirect(`https://x.com/${data.xAccount}`);
+  // リダイレクトを一時的に無効化
+  return (
+    <div>
+      <h1>Preview Page</h1>
+      <p>X Account: {data.xAccount}</p>
+      <p>Image URL: {data.imageUrl}</p>
+      <a href={`https://x.com/${data.xAccount}`}>Go to X Profile</a>
+    </div>
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
