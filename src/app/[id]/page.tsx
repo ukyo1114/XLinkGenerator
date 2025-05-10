@@ -11,7 +11,15 @@ export default async function Page({ params }: Props) {
   const data = await fetchItem(resolvedParams.id);
   if (!data) redirect("/not-found");
 
-  redirect(`https://x.com/${data.xAccount}`);
+  // リダイレクトを一時的に無効化
+  return (
+    <div>
+      <h1>Preview Page</h1>
+      <p>X Account: {data.xAccount}</p>
+      <p>Image URL: {data.imageUrl}</p>
+      <a href={`https://x.com/${data.xAccount}`}>Go to X Profile</a>
+    </div>
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -20,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) return {};
 
   const imageUrl = data.imageUrl;
+  console.log("Generated image URL:", imageUrl);
   const title = `${data.xAccount} on X`;
   const description = `Check out ${data.xAccount}'s profile on X`;
 
@@ -27,24 +36,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     openGraph: {
-      title,
-      description,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${data.xAccount}'s profile image`,
-        },
-      ],
-      type: "website",
+      images: [imageUrl],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
       images: [imageUrl],
-      creator: data.xAccount,
     },
   };
 }
