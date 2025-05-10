@@ -1,7 +1,6 @@
 import { fetchItem } from "@/util/fetchItem";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -12,26 +11,39 @@ export default async function Page({ params }: Props) {
   const data = await fetchItem(resolvedParams.id);
   if (!data) redirect("/not-found");
 
-  // Xのクロラーかどうかを判定（User-Agentをチェック）
-  const headersList = await headers();
-  const userAgent = headersList.get("user-agent") || "";
-  const isCrawler =
-    userAgent.toLowerCase().includes("twitterbot") ||
-    userAgent.toLowerCase().includes("x.com") ||
-    userAgent.toLowerCase().includes("facebookexternalhit");
-
-  // クロラーの場合はメタデータを表示、それ以外はリダイレクト
-  if (isCrawler) {
-    return (
-      <div>
-        <h1>Preview Page</h1>
-        <p>X Account: {data.xAccount}</p>
-        <p>Image URL: {data.imageUrl}</p>
-      </div>
-    );
-  }
-
-  redirect(`https://x.com/${data.xAccount}`);
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        padding: "20px",
+        textAlign: "center",
+      }}
+    >
+      <h1 style={{ marginBottom: "20px" }}>X Profile</h1>
+      <p style={{ marginBottom: "40px" }}>@{data.xAccount}</p>
+      <a
+        href={`https://x.com/${data.xAccount}`}
+        style={{
+          display: "inline-block",
+          padding: "20px 40px",
+          fontSize: "24px",
+          backgroundColor: "#1DA1F2",
+          color: "white",
+          textDecoration: "none",
+          borderRadius: "50px",
+          fontWeight: "bold",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          cursor: "pointer",
+        }}
+      >
+        Jump to X Profile
+      </a>
+    </div>
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
