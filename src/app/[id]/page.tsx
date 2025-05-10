@@ -20,8 +20,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) return {};
 
   const imageUrl = data.imageUrl;
-  console.log(imageUrl);
-
   const title = `${data.xAccount} on X`;
   const description = `Check out ${data.xAccount}'s profile on X`;
 
@@ -30,9 +28,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     other: {
       "twitter:card": "summary",
-      "twitter:image": imageUrl,
+      "twitter:site": "@x",
       "twitter:title": title,
       "twitter:description": description,
+      "twitter:image": imageUrl,
       "twitter:creator": data.xAccount,
     },
   };
