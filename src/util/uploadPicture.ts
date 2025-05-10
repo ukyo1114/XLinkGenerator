@@ -1,8 +1,4 @@
-import {
-  S3Client,
-  PutObjectCommand,
-  ObjectCannedACL,
-} from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import * as FileType from "file-type";
 import { errors } from "@/config/errorMessages";
 
@@ -33,7 +29,6 @@ export const uploadPicture = async (
     Key: filePath,
     Body: pic,
     ContentType: fileType.mime,
-    ACL: ObjectCannedACL.public_read,
     CacheControl: "no-cache",
   };
 
