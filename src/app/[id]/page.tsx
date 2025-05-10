@@ -19,17 +19,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await fetchItem(resolvedParams.id);
   if (!data) return {};
 
+  const imageUrl = data.imageUrl;
+  const title = `${data.xAccount} on X`;
+  const description = `Check out ${data.xAccount}'s profile on X`;
+
   return {
-    title: `${data.xAccount} on X`,
-    description: `Check out ${data.xAccount}'s profile on X`,
+    title,
+    description,
     openGraph: {
-      title: `${data.xAccount} on X`,
-      description: `Check out ${data.xAccount}'s profile on X`,
+      title,
+      description,
       images: [
         {
-          url: data.imageUrl,
-          width: 1200,
-          height: 630,
+          url: imageUrl,
           alt: `${data.xAccount}'s profile image`,
         },
       ],
@@ -37,9 +39,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${data.xAccount} on X`,
-      description: `Check out ${data.xAccount}'s profile on X`,
-      images: [data.imageUrl],
+      title,
+      description,
+      images: [imageUrl],
+      creator: data.xAccount,
+    },
+    other: {
+      "twitter:image:alt": `${data.xAccount}'s profile image`,
     },
   };
 }
