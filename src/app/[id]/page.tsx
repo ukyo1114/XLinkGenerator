@@ -1,15 +1,26 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { fetchItem } from "@/util/fetchItem";
-import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 };
 
-export default async function Page({ params }: Props) {
-  const resolvedParams = await params;
-  const data = await fetchItem(resolvedParams.id);
-  if (!data) redirect("/not-found");
+export default function Page({ params }: Props) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkData = async () => {
+      const data = await fetchItem(params.id);
+      if (!data) {
+        router.push("/not-found");
+      }
+    };
+    checkData();
+  }, [params.id, router]);
 
   return (
     <div
@@ -24,24 +35,7 @@ export default async function Page({ params }: Props) {
       }}
     >
       <h1 style={{ marginBottom: "20px" }}>X Profile</h1>
-      <p style={{ marginBottom: "40px" }}>@{data.xAccount}</p>
-      <a
-        href={`https://x.com/${data.xAccount}`}
-        style={{
-          display: "inline-block",
-          padding: "20px 40px",
-          fontSize: "24px",
-          backgroundColor: "#1DA1F2",
-          color: "white",
-          textDecoration: "none",
-          borderRadius: "50px",
-          fontWeight: "bold",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-          cursor: "pointer",
-        }}
-      >
-        Jump to X Profile
-      </a>
+      <p style={{ marginBottom: "40px" }}>Loading...</p>
     </div>
   );
 }
