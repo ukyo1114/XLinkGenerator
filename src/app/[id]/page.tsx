@@ -23,25 +23,13 @@ export default async function Page({ params }: Props) {
         textAlign: "center",
       }}
     >
+      <meta
+        httpEquiv="refresh"
+        content={`0;url=https://x.com/${data.xAccount}`}
+      />
       <h1 style={{ marginBottom: "20px" }}>X Profile</h1>
       <p style={{ marginBottom: "40px" }}>@{data.xAccount}</p>
-      <a
-        href={`https://x.com/${data.xAccount}`}
-        style={{
-          display: "inline-block",
-          padding: "20px 40px",
-          fontSize: "24px",
-          backgroundColor: "#1DA1F2",
-          color: "white",
-          textDecoration: "none",
-          borderRadius: "50px",
-          fontWeight: "bold",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-          cursor: "pointer",
-        }}
-      >
-        Jump to X Profile
-      </a>
+      <p>Xのプロフィールページに移動します...</p>
     </div>
   );
 }

@@ -122,7 +122,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\enkgp\\Desktop\\x_link_generator\\src\\generated\\prisma",
+      "value": "C:\\Users\\enkgp\\Desktop\\x_link_generator_old\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -136,11 +136,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\enkgp\\Desktop\\x_link_generator\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\enkgp\\Desktop\\x_link_generator_old\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
