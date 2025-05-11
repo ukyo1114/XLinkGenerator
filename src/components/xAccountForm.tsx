@@ -11,6 +11,7 @@ export const Input = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied">("idle");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +20,7 @@ export const Input = () => {
       return;
     }
 
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("xAccount", xAccount);
     formData.append("image", pic);
@@ -41,6 +43,8 @@ export const Input = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,8 +106,19 @@ export const Input = () => {
           </div>
         )}
       </div>
-      <button type="submit" className={styles.submitButton}>
-        アップロード
+      <button
+        type="submit"
+        className={styles.submitButton}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <>
+            <div className={styles.loadingSpinner} />
+            アップロード中...
+          </>
+        ) : (
+          "アップロード"
+        )}
       </button>
       {generatedUrl && (
         <div className={styles.urlContainer}>
